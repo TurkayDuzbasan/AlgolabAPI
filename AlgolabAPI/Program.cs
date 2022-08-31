@@ -11,6 +11,7 @@ namespace AlgolabAPI
     {
         public static string hostname = "https://www.algolab.com.tr";
         public static string apiurl = "https://www.algolab.com.tr/api";
+        public static string websocketurl = "wss://www.algolab.com.tr/api/ws";
         public static string APIKEY = "API-";
 
         public static string URL_LOGIN_USER = "/api/LoginUser";
@@ -40,9 +41,12 @@ namespace AlgolabAPI
             var login = LoginUser(USERNAME, PASSWORD);
 
             string token = login.Content.token;
-            
+            SMSCODE = "";
             var control = LoginControl(token, SMSCODE);
             HASH = control.Content.Hash;
+
+           
+            WebSocket.ConnectToWebsocket();
 
             string symbol = "TSKB";
             var Equity = GetEquityInfo(symbol);
@@ -50,7 +54,7 @@ namespace AlgolabAPI
             var SubAccounts = GetSubAccounts();
 
             var instantPosition = InstantPosition("");
-            
+
             var todaysTransaction = TodaysTransaction("");
 
             var viopCustomerOverall = ViopCustomerOverall("");
@@ -59,7 +63,7 @@ namespace AlgolabAPI
             var sendOrder = SendOrder("EKGYO", "BUY", "limit", "3.90", "1", true, true, "");
             string orderid = sendOrder.Content.ToString().Split(';')[0].Split(":")[1].Trim();
 
-            var modifyOrder = ModifyOrder(orderid, "3.91", "1", false,"");
+            var modifyOrder = ModifyOrder(orderid, "3.91", "1", false, "");
 
             var deleteOrder = DeleteOrder(orderid, "");
 
