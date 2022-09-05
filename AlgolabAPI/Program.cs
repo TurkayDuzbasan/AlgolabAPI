@@ -27,7 +27,7 @@ namespace AlgolabAPI
         public static string URL_DELETEORDER = "/api/DeleteOrder";
         public static string URL_DELETEORDERVIOP = "/api/DeleteOrderViop";
         public static string URL_SESSIONREFRESH = "/api/SessionRefresh";
-
+        public static string URL_GETCANDLEDATA = "/api/GetCandleData";
 
         public static string HASH = "";
 
@@ -69,6 +69,7 @@ namespace AlgolabAPI
 
             var sessionRefresh = SessionRefresh();
 
+            var getcandledata = GetCandleData("TSKB", "1");
             Console.ReadLine();
         }
 
@@ -520,6 +521,45 @@ namespace AlgolabAPI
                 request.Headers.Add("APIKEY", APIKEY);
                 request.Headers.Add("Authorization", HASH);
                 request.Headers.Add("Checker", ComputeSha256Hash(APIKEY + hostname + URL_DELETEORDERVIOP + postData));
+                request.ContentType = "application/json; charset=utf-8";
+                request.Method = "POST";
+                request.Accept = "application/json; charset=utf-8";
+                request.ContentLength = data.Length;
+
+                using (var stream = request.GetRequestStream())
+                {
+                    stream.Write(data, 0, data.Length);
+                }
+
+                var response = (HttpWebResponse)request.GetResponse();
+
+                result = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+                return DeserializeJson<Response>(result);
+            }
+            catch (Exception ex)
+            {
+                return new Response() { Success = false, Message = ex.Message, Content = ex };
+            }
+        }
+
+        public static Response GetCandleData(string symbol, string period)
+        {
+            try
+            {
+
+                string postData = "{\"symbol\":\"" + symbol + "\",\"period\":\"" + period + "\"}";
+
+
+                string result = string.Empty;
+
+                var request = (HttpWebRequest)WebRequest.Create(apiurl + URL_GETCANDLEDATA);
+
+                var data = Encoding.UTF8.GetBytes(postData);
+
+                request.Headers.Add("APIKEY", APIKEY);
+                request.Headers.Add("Authorization", HASH);
+                request.Headers.Add("Checker", ComputeSha256Hash(APIKEY + hostname + URL_GETCANDLEDATA + postData));
                 request.ContentType = "application/json; charset=utf-8";
                 request.Method = "POST";
                 request.Accept = "application/json; charset=utf-8";
