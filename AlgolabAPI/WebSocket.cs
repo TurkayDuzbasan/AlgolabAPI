@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.WebSockets;
 using System.Text;
@@ -38,7 +39,19 @@ namespace AlgolabAPI
                     WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
 
                     string a = System.Text.Encoding.UTF8.GetString(buffer, 0, result.Count);
-                    Console.WriteLine(a);
+                    WebsocketData model = new WebsocketData();
+                    model = JsonConvert.DeserializeObject<WebsocketData>(a);
+                    if (model != null && model.Type == "D")
+                    {
+                        Depth depthmodel = JsonConvert.DeserializeObject<Depth>(JsonConvert.SerializeObject(model.Content));
+
+                        if (depthmodel.Symbol == "GARAN")
+                        {
+
+                            Console.WriteLine(JsonConvert.SerializeObject(depthmodel));
+                        }
+                    }
+                    //Console.WriteLine(a);
                 }
                 catch (Exception ex)
                 {                    

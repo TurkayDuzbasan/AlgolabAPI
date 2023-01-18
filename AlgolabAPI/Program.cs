@@ -12,7 +12,7 @@ namespace AlgolabAPI
         public static string hostname = "https://www.algolab.com.tr";
         public static string apiurl = "https://www.algolab.com.tr/api";
         public static string websocketurl = "wss://www.algolab.com.tr/api/ws";
-        public static string APIKEY = "API-";
+        public static string APIKEY = "";
 
         public static string URL_LOGIN_USER = "/api/LoginUser";
         public static string URL_LOGIN_CONTROL = "/api/LoginUserControl";
@@ -41,35 +41,36 @@ namespace AlgolabAPI
             var login = LoginUser(USERNAME, PASSWORD);
 
             string token = login.Content.token;
-            SMSCODE = "";
+            Console.WriteLine("Sms Giriniz.");
+            SMSCODE = Console.ReadLine();
             var control = LoginControl(token, SMSCODE);
             HASH = control.Content.Hash;
 
            
             WebSocket.ConnectToWebsocket();
 
-            string symbol = "TSKB";
-            var Equity = GetEquityInfo(symbol);
+            //string symbol = "TSKB";
+            //var Equity = GetEquityInfo(symbol);
 
-            var SubAccounts = GetSubAccounts();
+            //var SubAccounts = GetSubAccounts();
 
-            var instantPosition = InstantPosition("");
+            //var instantPosition = InstantPosition("");
 
-            var todaysTransaction = TodaysTransaction("");
+            //var todaysTransaction = TodaysTransaction("");
 
-            var viopCustomerOverall = ViopCustomerOverall("");
-            var viopCustomerTransactions = ViopCustomerTransactions("");
+            //var viopCustomerOverall = ViopCustomerOverall("");
+            //var viopCustomerTransactions = ViopCustomerTransactions("");
 
-            var sendOrder = SendOrder("EKGYO", "BUY", "limit", "3.90", "1", true, true, "");
-            string orderid = sendOrder.Content.ToString().Split(';')[0].Split(":")[1].Trim();
+            //var sendOrder = SendOrder("EKGYO", "BUY", "limit", "3.90", "1", true, true, "");
+            //string orderid = sendOrder.Content.ToString().Split(';')[0].Split(":")[1].Trim();
 
-            var modifyOrder = ModifyOrder(orderid, "3.91", "1", false, "");
+            //var modifyOrder = ModifyOrder(orderid, "3.91", "1", false, "");
 
-            var deleteOrder = DeleteOrder(orderid, "");
+            //var deleteOrder = DeleteOrder(orderid, "");
 
-            var sessionRefresh = SessionRefresh();
+            //var sessionRefresh = SessionRefresh();
 
-            var getcandledata = GetCandleData("TSKB", "1");
+            //var getcandledata = GetCandleData("TSKB", "1");
             Console.ReadLine();
         }
 
