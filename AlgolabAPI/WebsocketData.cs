@@ -46,4 +46,5 @@ namespace AlgolabAPI
         public string Buying { get; set; }
         public string Selling { get; set; }
     }
+    
 }

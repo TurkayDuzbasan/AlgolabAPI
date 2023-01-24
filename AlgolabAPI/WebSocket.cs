@@ -45,12 +45,17 @@ namespace AlgolabAPI
                     {
                         Depth depthmodel = JsonConvert.DeserializeObject<Depth>(JsonConvert.SerializeObject(model.Content));
 
-                        if (depthmodel.Symbol == "GARAN")
-                        {
-
-                            Console.WriteLine(JsonConvert.SerializeObject(depthmodel));
-                        }
+                        Console.WriteLine(JsonConvert.SerializeObject(depthmodel));
+                        
                     }
+                    else if(model != null && model.Type == "T")
+                    {
+                        Tick tickmodel = JsonConvert.DeserializeObject<Tick>(JsonConvert.SerializeObject(model.Content));
+                        
+                        Console.WriteLine(JsonConvert.SerializeObject(tickmodel));
+                        
+                    }
+
                     //Console.WriteLine(a);
                 }
                 catch (Exception ex)
